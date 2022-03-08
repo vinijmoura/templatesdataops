@@ -19,7 +19,7 @@ steps:
   inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     resourceGroupName: '$(rgName)'
-    location: '$(azureLocation)'
+    location: 'eastus'
     csmFile: '$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json'
     csmParametersFile: '$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateParametersForFactory.json'
     overrideParameters: -factoryName "$(adfName)" -AzureKeyVault_properties_typeProperties_baseUrl "$(kvbaseUrl)"
