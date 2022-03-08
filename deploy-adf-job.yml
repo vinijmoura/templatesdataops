@@ -7,9 +7,15 @@ steps:
   path: 'adf_publish' 
   
 - task: CmdLine@2
-  displayName: DIR
+  displayName: DIR WorksSpace
   inputs:
     script: 'dir $(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd'
+
+- task: CmdLine@2
+  displayName: DIR WorksSpace
+  inputs:
+    script: 'dir $(Build.SourcesDirectory)'
+
 - task: AzurePowerShell@4
   displayName: 'Azure PowerShell script: Stop ADF triggers'
   inputs:
