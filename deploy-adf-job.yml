@@ -1,6 +1,4 @@
 parameters:
-- name: environmentName
-  type: string
 - name: serviceConnection
   type: string
 
