@@ -22,9 +22,9 @@ steps:
     overrideParameters: -factoryName "$(adfName)" -AzureKeyVault_properties_typeProperties_baseUrl "$(kvbaseUrl)"
 
 - task: AzurePowerShell@4
-    displayName: 'Azure PowerShell script: Start ADF triggers'
-    inputs:
-      azureSubscription: ${{ parameters.serviceConnection }}
-      ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
-      ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $false'
-      azurePowerShellVersion: LatestVersion
+  displayName: 'Azure PowerShell script: Start ADF triggers'
+  inputs:
+    azureSubscription: ${{ parameters.serviceConnection }}
+    ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
+    ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $false'
+    azurePowerShellVersion: LatestVersion
