@@ -4,16 +4,16 @@ parameters:
 
 steps:
 - task: AzurePowerShell@4
-    inputs:
+  displayName: 'Azure PowerShell script: Stop ADF triggers'
+  inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
     ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $true'
     azurePowerShellVersion: LatestVersion
-    displayName: 'Azure PowerShell script: Stop ADF triggers'
 
 - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment:Create Or Update Resource Group action on $(rgName)'
-    inputs:
+  displayName: 'Azure Deployment:Create Or Update Resource Group action on $(rgName)'
+  inputs:
     azureSubscription: ${{ parameters.serviceConnection }}
     resourceGroupName: '$(rgName)'
     location: '$(azureLocation)'
@@ -24,7 +24,7 @@ steps:
 - task: AzurePowerShell@4
     displayName: 'Azure PowerShell script: Start ADF triggers'
     inputs:
-    azureSubscription: ${{ parameters.serviceConnection }}
-    ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
-    ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $false'
-    azurePowerShellVersion: LatestVersion
+      azureSubscription: ${{ parameters.serviceConnection }}
+      ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
+      ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $false'
+      azurePowerShellVersion: LatestVersion
