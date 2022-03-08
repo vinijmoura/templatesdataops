@@ -1,0 +1,44 @@
+parameters:
+- name: environmentName
+  type: string
+- name: serviceConnection
+  type: string
+
+jobs:
+- deployment: deploy_adf
+  displayName: 'Deploy to Azure Data Factory'
+  pool:
+    vmImage: 'windows-2019'
+  environment: ${{ parameters.environmentName }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: dataops_adfpublish
+          path: 'adf_publish' 
+
+        - task: AzurePowerShell@4
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
+            ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $true'
+            azurePowerShellVersion: LatestVersion
+          displayName: 'Azure PowerShell script: Stop ADF triggers'
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'Azure Deployment:Create Or Update Resource Group action on $(rgName)'
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            resourceGroupName: '$(rgName)'
+            location: '$(azureLocation)'
+            csmFile: '$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json'
+            csmParametersFile: '$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateParametersForFactory.json'
+            overrideParameters: -factoryName "$(adfName)" -AzureKeyVault_properties_typeProperties_baseUrl "$(kvbaseUrl)"
+
+        - task: AzurePowerShell@4
+          displayName: 'Azure PowerShell script: Start ADF triggers'
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            ScriptPath: '$(Build.SourcesDirectory)\adf\_scripts\deploymentadf.ps1'
+            ScriptArguments: '-armTemplate "$(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd\ARMTemplateForFactory.json" -ResourceGroupName "$(rgName)" -DataFactoryName "$(adfName)" -predeployment $false'
+            azurePowerShellVersion: LatestVersion
