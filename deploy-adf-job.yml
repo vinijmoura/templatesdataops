@@ -6,6 +6,10 @@ steps:
 - checkout: dataops_adfpublish
   path: 'adf_publish' 
   
+- task: CmdLine@2
+  displayName: DIR
+  inputs:
+    script: 'dir $(Pipeline.Workspace)\adf_publish\adf-test-bv-cicd'
 - task: AzurePowerShell@4
   displayName: 'Azure PowerShell script: Stop ADF triggers'
   inputs:
