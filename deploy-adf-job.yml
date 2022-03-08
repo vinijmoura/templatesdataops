@@ -3,6 +3,9 @@ parameters:
   type: string
 
 steps:
+- checkout: dataops_adfpublish
+    path: 'adf_publish' 
+    
 - task: AzurePowerShell@4
   displayName: 'Azure PowerShell script: Stop ADF triggers'
   inputs:
