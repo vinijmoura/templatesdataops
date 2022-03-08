@@ -2,7 +2,6 @@ parameters:
 - name: serviceConnection
   type: string
 
-jobs:
 steps:
 - checkout: dataops_adfpublish
     path: 'adf_publish' 
